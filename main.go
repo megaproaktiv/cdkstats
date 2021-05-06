@@ -13,19 +13,33 @@ import (
 const stackNamesFile = "stacks.csv"
 
 func main() {
-	stacks := GetStatus()
-	cdkStacks := ReadStacks()
+	LOCALONLY := "LOCAL_ONLY"
+
+	remoteStacks := GetStatus()
+	localCDKStackNames := ReadStacks()
+	remoteStackNames := make([]string, 5)
 
 	fmt.Printf("%-32s %-32s\n","Name", "Status")
 	fmt.Printf("%-32s %-32s\n","----", "------")
-	for i := range  stacks.Stacks{
-		stack :=  stacks.Stacks[i]
+	// Remote State
+	for i := range  remoteStacks.Stacks{
+		stack :=  remoteStacks.Stacks[i]
+		remoteStackNames = append(remoteStackNames, *stack.StackName)
 		name := FixedLengthString(*stack.StackName)
 		status := FixedLengthString(string(stack.StackStatus))
-		if contains( cdkStacks, *stack.StackName) {
+		if contains( localCDKStackNames, *stack.StackName) {
 			fmt.Printf("%s %s\n",name, status)
 		}
 	}	
+	// Local only
+	status := FixedLengthString(LOCALONLY)
+	for _, nameLocal := range *localCDKStackNames {
+		name := FixedLengthString(*&nameLocal)
+		if !contains( &remoteStackNames, nameLocal) {
+			fmt.Printf("%s %s\n",name, status)
+		}
+	}	
+
 }
 
 

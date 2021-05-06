@@ -21,3 +21,26 @@ You will see the Cloudformation State of *only* the Stacks managed by CDK
 e.g.
 
 `mv cdkstat /usr/local/bin/`
+
+## Example output
+
+If you have those stacks locally:
+
+```bash
+cat stacks.csv
+SecurityStack
+PortalServerStack
+NoThereStack
+```
+
+
+
+`cdkstat` will give
+
+```txt
+Name                             Status
+----                             ------
+PortalServerStack                CREATE_COMPLETE
+SecurityStack                    CREATE_COMPLETE
+NoThereStack                     LOCAL_ONLY
+```
