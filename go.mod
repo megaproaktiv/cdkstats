@@ -1,4 +1,4 @@
-module github.com/megaproaktiv/cdkstats
+module github.com/megaproaktiv/cdkstat
 
 go 1.16
 
