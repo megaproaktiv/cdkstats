@@ -33,7 +33,7 @@ SG007                            sg-02393c66de6a16973             AWS::EC2::Secu
 
 1. Create binary
 
-`go build -o cdkstat main.go`
+`go build -o cdkstat main/main.go`
 
 2. Move binary into PATH
 
