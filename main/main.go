@@ -1,11 +1,40 @@
 package main
 
 import (
-	"github.com/megaproaktiv/cdkstat"
 	"fmt"
+	"os"
+
+	"github.com/megaproaktiv/cdkstat"
 )
 
 func main() {
+	argLength := len(os.Args[1:])
+	if argLength == 0 {
+		overview()
+	}else{
+		stackName := os.Args[1]
+		resources,err := cdkstat.ReadStackDetail(&stackName)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("%-32s %-32s %-32s %-32s \n", "Logical ID", "Pysical ID", "Type" , "Status")
+		fmt.Printf("%-32s %-32s %-32s %-32s\n", "----------", "----------", "-----------","-----------")
+
+		for _, resource := range *resources {
+			
+			logicalID := FixedLengthString(*resource.LogicalResourceId)
+			physicalID := FixedLengthString(*resource.PhysicalResourceId)
+			rType := FixedLengthString(*resource.ResourceType)
+			statusString := string(resource.ResourceStatus)
+			rStatus := FixedLengthString(statusString)
+			fmt.Printf("%s %s %s %s\n", logicalID, physicalID, rType, rStatus)
+
+
+		}
+
+	}
+}
+func overview() {
 	LOCALONLY := "LOCAL_ONLY"
 
 	remoteStacks := cdkstat.GetStatus()
@@ -41,6 +70,9 @@ func main() {
 
 // FixedLengthString some formatting
 func FixedLengthString(str string) string {
+	if len(str) > 31{
+		str = str[0:31]
+	}
 	return fmt.Sprintf("%-32s", str)
 }
 
