@@ -1,4 +1,3 @@
 securitygroups
 application
-batch
-sql
+lambda

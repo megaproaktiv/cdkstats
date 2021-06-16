@@ -10,6 +10,25 @@ see Status of cdk stacks
 
 You will see the Cloudformation State of *only* the Stacks managed by CDK
 
+```txt
+Name                             Status                           Description
+----                             ------                           -----------
+application                      CREATE_COMPLETE                  Application Server
+securitygroups                   CREATE_COMPLETE                  Security Groups
+lambda                           CREATE_COMPLETE                  Serverless Stuff
+```
+
+3) `ckdstat securitygroups`
+
+```txt
+Logical ID                       Pysical ID                       Type                             Status
+----------                       ----------                       -----------                      -----------
+SG1                              sg-00026dad358d5e2a3             AWS::EC2::SecurityGroup          CREATE_COMPLETE
+CDKMetadata                      ae25d3b0-ce8c-11eb-a6c0-0ae8c75  AWS::CDK::Metadata               CREATE_COMPLETE
+SG007                            sg-02393c66de6a16973             AWS::EC2::SecurityGroup          CREATE_COMPLETE
+```
+
+
 ## Installation
 
 1. Create binary
@@ -29,7 +48,6 @@ If you have those stacks locally:
 ```bash
 cat stacks.csv
 SecurityStack
-PortalServerStack
 NoThereStack
 ```
 
@@ -40,7 +58,6 @@ NoThereStack
 ```txt
 Name                             Status
 ----                             ------
-PortalServerStack                CREATE_COMPLETE
 SecurityStack                    CREATE_COMPLETE
 NoThereStack                     LOCAL_ONLY
 ```
