@@ -27,6 +27,8 @@ func main() {
 			rType := FixedLengthString(*resource.ResourceType)
 			statusString := string(resource.ResourceStatus)
 			rStatus := FixedLengthString(statusString)
+
+		
 			fmt.Printf("%s %s %s %s\n", logicalID, physicalID, rType, rStatus)
 
 
