@@ -11,9 +11,10 @@ import (
 )
 
 const stackNamesFile = "stacks.csv"
+
 var client *cloudformation.Client
 
-func init(){
+func init() {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 
 	if err != nil {
@@ -25,12 +26,16 @@ func init(){
 }
 
 // GetStatus get States of all Cfn Stacks
-func GetStatus() *(cloudformation.DescribeStacksOutput) {
+func GetStatus() (*cloudformation.DescribeStacksOutput, error) {
 
 	input := &cloudformation.DescribeStacksInput{}
 
-	resp, _ := client.DescribeStacks(context.TODO(), input)
-	return resp
+	resp, err := client.DescribeStacks(context.TODO(), input)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return resp, nil
 }
 
 // Read saves Stack Names from file
@@ -56,9 +61,9 @@ func ReadStacks() *[]string {
 
 func ReadStackDetail(stackName *string) (*[]types.StackResource, error) {
 	params := &cloudformation.DescribeStackResourcesInput{
-		StackName:          stackName,
+		StackName: stackName,
 	}
-	res, err := client.DescribeStackResources(context.TODO(), params)	
+	res, err := client.DescribeStackResources(context.TODO(), params)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err

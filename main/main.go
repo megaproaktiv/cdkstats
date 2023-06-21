@@ -11,17 +11,17 @@ func main() {
 	argLength := len(os.Args[1:])
 	if argLength == 0 {
 		overview()
-	}else{
+	} else {
 		stackName := os.Args[1]
-		resources,err := cdkstat.ReadStackDetail(&stackName)
+		resources, err := cdkstat.ReadStackDetail(&stackName)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("%-32s %-32s %-32s %-32s \n", "Logical ID", "Pysical ID", "Type" , "Status")
-		fmt.Printf("%-32s %-32s %-32s %-32s\n", "----------", "----------", "-----------","-----------")
+		fmt.Printf("%-32s %-32s %-32s %-32s \n", "Logical ID", "Pysical ID", "Type", "Status")
+		fmt.Printf("%-32s %-32s %-32s %-32s\n", "----------", "----------", "-----------", "-----------")
 
 		for _, resource := range *resources {
-			
+
 			logicalID := FixedLengthString(*resource.LogicalResourceId)
 			physicalID := FixedLengthString(*resource.PhysicalResourceId)
 			rType := FixedLengthString(*resource.ResourceType)
@@ -29,15 +29,18 @@ func main() {
 			rStatus := FixedLengthString(statusString)
 			fmt.Printf("%s %s %s %s\n", logicalID, physicalID, rType, rStatus)
 
-
 		}
 
 	}
 }
+
 func overview() {
 	LOCALONLY := "LOCAL_ONLY"
 
-	remoteStacks := cdkstat.GetStatus()
+	remoteStacks, err := cdkstat.GetStatus()
+	if err != nil {
+		panic(err)
+	}
 	localCDKStackNames := cdkstat.ReadStacks()
 	remoteStackNames := make([]string, 5)
 
@@ -50,7 +53,7 @@ func overview() {
 		name := FixedLengthString(*stack.StackName)
 		status := FixedLengthString(string(stack.StackStatus))
 		description := "-"
-		if stack.Description != nil{
+		if stack.Description != nil {
 			description = FixedLengthString(string(*stack.Description))
 		}
 		if contains(localCDKStackNames, *stack.StackName) {
@@ -70,7 +73,7 @@ func overview() {
 
 // FixedLengthString some formatting
 func FixedLengthString(str string) string {
-	if len(str) > 31{
+	if len(str) > 31 {
 		str = str[0:31]
 	}
 	return fmt.Sprintf("%-32s", str)

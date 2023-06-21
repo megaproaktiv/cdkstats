@@ -1,0 +1,22 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  DIST: dist
+  APP: cdkstat
+
+tasks:
+  install:
+    desc: Install app
+    deps:
+      - build
+    cmds:
+      - cp {{.DIST}}/{{.APP}} /usr/local/bin/{{.APP}}
+    silent: true
+
+  build:
+    desc: Build app
+    cmds:
+      - go build -o {{.DIST}}/{{.APP}} main/main.go
+    silent: true
